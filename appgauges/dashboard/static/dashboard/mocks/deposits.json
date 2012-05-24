@@ -1,0 +1,11 @@
+[{
+  "frequency": "ONE_MIN",
+  "metricPath": "Business Transaction Performance|Business Transactions|marcom|/myaccount/deposit.do|Calls per Minute",
+  "metricValues": [  {
+    "current": 24,
+    "max": 0,
+    "min": 0,
+    "startTimeInMillis": 1332168480000,
+    "value":16315
+  }]
+}]

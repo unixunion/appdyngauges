@@ -1,0 +1,49 @@
+*,
+*:before,
+*:after {
+	font-family: sans-serif;
+}
+.sl-center {
+	text-align: center;
+}
+.sl-center > * {
+	text-align: left;
+}
+.gauge-widget {
+	min-width: 220px;
+}
+.sl-node .size-1 {
+	width: 100%;
+}
+.sl-node .size-2 {
+	width: 50%;
+}
+.sl-node .size-3 {
+	width: 33.333333%;
+}
+.sl-node .size-4 {
+	width: 25%;
+}
+.sl-node .size-5 {
+	width: 15%;
+}
+
+.mobile .gutter {
+	margin: 15px 5px;
+}
+.mobile.dj_tablet  .gutter {
+	margin: 25px 10px;
+}
+@media all and (max-width: 700px) {
+	.sl-node .size-3 {
+		width:50%;
+	}
+}
+@media all and (max-width: 499px) {
+	.sl-node .size-2 {
+		width:100%;
+	}
+	.sl-node .size-3 {
+		width:100%;
+	}
+}

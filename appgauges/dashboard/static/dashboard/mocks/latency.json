@@ -1,0 +1,11 @@
+[{
+  "frequency": "ONE_MIN",
+  "metricPath": "Overall Application Performance|Average Response Time (ms)",
+  "metricValues": [  {
+    "current": 1947,
+    "max": 27288,
+    "min": 0,
+    "startTimeInMillis": 1332167580000,
+    "value": 455
+  }]
+}]

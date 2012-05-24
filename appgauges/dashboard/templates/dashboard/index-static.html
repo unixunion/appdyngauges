@@ -1,0 +1,226 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="apple-touch-icon" href="{{ STATIC_URL }}/dashboard/images/apple-touch-icons/icon.png"/>
+		<link rel="apple-touch-startup-image" media="(min-device-width: 768px) and (orientation: portrait)" href="{{ STATIC_URL }}/dashboard/images/apple-touch-icons/default-portrait.png" />
+		<link rel="apple-touch-startup-image" media="(min-device-width: 768px) and (orientation: landscape)" href="{{ STATIC_URL }}/dashboard/images/apple-touch-icons/default.png" />
+		<title>Dashboard</title>
+		<style>
+			@import "{{ STATIC_URL }}/dashboard/css/reset.css";
+         @import "{{ STATIC_URL }}/dashboard/css/stacklayout.css";
+         @import "{{ STATIC_URL }}/dashboard/css/stacklayout-custom.css";
+         @import "{{ STATIC_URL }}/dashboard/css/base.css";
+         @import "{{ STATIC_URL }}/dashboard/css/ipad.css";
+         @import "{{ STATIC_URL }}/dashboard/css/TabBar.css";
+         @import "{{ STATIC_URL }}/dashboard/css/map.css";
+         @import "{{ STATIC_URL }}/dashboard/css/gauges.css";
+         @import "{{ STATIC_URL }}/dashboard/css/custom.css";
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js" djConfig="parseOnLoad: true, mblAlwaysHideAddressBar: true"></script>
+		<script src="https://www.google.com/jsapi"></script>
+		<script src="{{ STATIC_URL }}/dashboard/js/map.js"></script>
+		<script src="{{ STATIC_URL }}/dashboard/js/jquery.js"></script>
+		<script src="{{ STATIC_URL }}/dashboard/js/core.js"></script>
+		<script src="/settings.js"></script>
+		<script src="/views.js"></script>
+		<script src="{{ STATIC_URL }}/dashboard/js/widget-gauge.js"></script>
+		<script src="{{ STATIC_URL }}/dashboard/js/widget-jira.js"></script>
+		<script src="{{ STATIC_URL }}/dashboard/js/widget-map.js"></script>
+		<script>
+			dojo.require('dojox.mobile.deviceTheme');
+         dojo.require('dojo.NodeList-manipulate');
+         dojo.require('dojo.NodeList-traverse');
+         dojo.require('dojox.mobile');       // This is a mobile app.
+         dojo.require('dojox.mobile.parser');   // This mobile app supports running on desktop browsers
+         dojo.require('dojox.mobile.ScrollableView');
+         dojo.require('dojox.mobile.Switch');
+         dojo.require('dojox.mobile.compat');   // This mobile app uses declarative programming with fast mobile parser
+         dojo.require('dojox.mobile.TabBar');
+         dojo.require("dojox.mobile.SpinWheel");
+         dojo.require("dojox.mobile.Opener");
+         dojo.require("dojox.mobile.SpinWheel");
+         dojo.require("dojox.mobile.SpinWheelSlot");
+         dojo.require("dojox.mobile.Tooltip");
+         dojo.require("dojox.mobile.Button");
+         dojo.require("dojox.mobile.common");
+         dojo.require('dijit.form.Button');
+         dojo.require('dojox.timing');
+         dojo.require('dojox.gauges.GlossyCircularGauge');
+         dojo.require('dojox.xml.DomParser');
+			dojo.require("dijit.form.DataList");
+		</script>
+	</head>
+	<body class="claro">
+		<div id="loader"><div class="loader-icon"></div></div>
+		
+		<div id="help" data-dojo-type="dojox.mobile.ScrollableView">
+			<h1 data-dojo-type="dojox.mobile.Heading" data-dojo-props="fixed: 'top', next: 'About', moveTo: 'about'">Help</h1>
+			<div class="sl-node sl-center">
+				<div class="sl-node size-1 list-widget">
+					<div class="item-wrapper gutter">
+						<h2 data-dojo-type="dojox.mobile.RoundRectCategory">Fullscreen</h2>
+						<div data-dojo-type="dojox.mobile.RoundRect" data-dojo-props="shadow: true">
+						To use as a full screen app, click the export button in the safari bar and save as a desktop shortcut.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="about" data-dojo-type="dojox.mobile.ScrollableView">
+			<h1 data-dojo-type="dojox.mobile.Heading" data-dojo-props="fixed: 'top'">About</h1>
+			<div class="sl-node sl-center">
+				<div class="sl-node size-1 list-widget">
+					<div class="item-wrapper gutter">
+						<h2 data-dojo-type="dojox.mobile.RoundRectCategory">Platform Dashboard</h2>
+						<ul data-dojo-type="dojox.mobile.RoundRectList">
+							<li data-dojo-type="dojox.mobile.ListItem" data-dojo-props="rightText: 'Kegan Holtzhausen'">
+								By
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="overview" data-dojo-type="dojox.mobile.ScrollableView" data-dojo-props="selected: true">
+			<h1 data-dojo-type="dojox.mobile.Heading" fixed="top" data-dojo-props='label:"Platform Overview"'></h1>
+
+			<div class="sl-node sl-center">
+				<div class="sl-node size-3 gauge-widget">
+               <div class="item-wrapper gutter">
+                  <h2 data-dojo-type="dojox.mobile.RoundRectCategory" class="category-heading">avgResponse</h2>
+                  <div class="gauge" id="avgResponse"><div class="loader-icon"></div></div>
+               </div>
+            </div>
+				<div class="sl-node size-3 gauge-widget">
+               <div class="item-wrapper gutter">
+                  <h2 data-dojo-type="dojox.mobile.RoundRectCategory" class="category-heading">avgCPS</h2>
+                  <div class="gauge" id="avgCps"><div class="loader-icon"></div></div>
+               </div>
+            </div>
+				<div class="sl-node size-3 gauge-widget">
+               <div class="item-wrapper gutter">
+                  <h2 data-dojo-type="dojox.mobile.RoundRectCategory" class="category-heading">avgStall</h2>
+                  <div class="gauge" id="avgStallCount"><div class="loader-icon"></div></div>
+               </div>
+            </div>
+				<br />
+
+				<br />
+                <div class="sl-grid size-1 list-widget">
+                    <div class="item-wrapper gutter">
+                        <h2 data-dojo-type="dojox.mobile.RoundRectCategory" class="category-heading" style="display: none;">Status overview:</h2>
+                        <ul id="statusList" data-dojo-type="dojox.mobile.RoundRectList">
+                            <li data-dojo-type="dojox.mobile.ListItem">
+                                <strong>Current major event:</strong> Streaming Video for Champions League Semi Finals, Real Madrid - Bayern
+                            </li>
+                            <li data-dojo-type="dojox.mobile.ListItem" style="height: auto; ">
+                                <strong style="display: block; margin-bottom: -18px">Current site status:</strong>
+                                <div class="status" style="display: inline-block; height: auto; line-height: 60px">
+                                    <img src="{{ STATIC_URL }}/dashboard/images/status-amber.png"style="height: 30px; padding: 0 5px; vertical-align: middle;">
+                                    Increased database load due to high transaction rate<a href="#" style="color: green">(CASE-82900)</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+
+
+		<div id="map" data-dojo-type="dojox.mobile.ScrollableView" style="background: rgb(120, 120, 120);">
+			<h1 data-dojo-type="dojox.mobile.Heading" fixed="top" id="map-header">Choose region</h1>
+			<div id="map-wrapper" style="padding-top: 15px;">
+                <div id="map-container" style="height: 768px; width:100%;"></div>
+			</div>
+            <div id="map-legend" style=""></div>
+		</div>
+
+		<div id="ggl" data-dojo-type="dojox.mobile.ScrollableView">
+			<h1 data-dojo-type="dojox.mobile.Heading" data-dojo-props="fixed: 'top'">Platform Overview</h1>
+			<div class="sl-wrap sl-center">
+				<div class="sl-node size-1 list-widget">
+					<div class="item-wrapper gutter">
+						<div data-dojo-type="dojox.mobile.RoundRect" data-dojo-props="shadow: true" style="height: 500px;">
+							<div id="ggl_logins_gauge"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="events" data-dojo-type="dojox.mobile.ScrollableView">
+			<h1 data-dojo-type="dojox.mobile.Heading" fixed="top">Events</h1>
+			<div class="sl-node  sl-center">
+				<div class="sl-node size-1 list-widget">
+					<div class="item-wrapper gutter">
+						<h2 data-dojo-type="dojox.mobile.RoundRectCategory">Top 3</h2>
+						<ul id="eventsTop3" data-dojo-type="dojox.mobile.RoundRectList">
+
+						</ul>
+					</div>
+				</div>
+				<div class="sl-node size-1 list-widget">
+					<div class="item-wrapper gutter">
+						<h2 data-dojo-type="dojox.mobile.RoundRectCategory">Upcoming Events</h2>
+						<ul id="eventsAll" data-dojo-type="dojox.mobile.RoundRectList">
+
+						</ul>
+					</div>
+				</div>
+			</div>
+        </div>
+
+        <div id="event-details" data-dojo-type="dojox.mobile.ScrollableView">
+            <h1 data-dojo-type="dojox.mobile.Heading" fixed="top">Event details</h1>
+            <div class="sl-node sl-center">
+                <div class="sl-node size-1 list-widget">
+                    <div class="item-wrapper gutter">
+                        <ul id="eventDetails" data-dojo-type="dojox.mobile.RoundRectList">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="jira" data-dojo-type="dojox.mobile.ScrollableView">
+			<h1 data-dojo-type="dojox.mobile.Heading" fixed="top">Jiras</h1>
+			<div class="sl-node sl-center">
+				<div class="sl-node size-1 list-widget">
+					<div class="item-wrapper gutter">
+						<ul id="jiraAllIssues" data-dojo-type="dojox.mobile.RoundRectList">
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="settings" data-dojo-type="dojox.mobile.ScrollableView">
+            <h1 data-dojo-type="dojox.mobile.Heading" fixed="top">Settings</h1>
+			<div class="sl-node sl-center">
+				<div class="sl-node size-1 list-widget">
+					<div class="item-wrapper gutter">
+						<h2 data-dojo-type="dojox.mobile.RoundRectCategory">Show</h2>
+						<ul data-dojo-type="dojox.mobile.RoundRectList">
+							<li data-dojo-type="dojox.mobile.ListItem">
+								Data Format
+								<div id="swx" class="mblItemSwitch" data-dojo-type="dojox.mobile.Switch" data-dojo-props="value: 'off', leftLabel: '%', rightLabel: '#'"></div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>		
+
+		<ul id="navigation" data-dojo-type="dojox.mobile.TabBar" data-dojo-props="iconBase: '{{ STATIC_URL }}/dashboard/images/tabbar-icons-2.png'" fixed="bottom">
+			<li id="tab-overview" data-dojo-type="dojox.mobile.TabBarButton" data-dojo-props="iconPos1: '0,0,24,24', iconPos2: '50,0,24,24', moveTo: 'overview', selected: true">Start</li>
+			<li id="tab-map" data-dojo-type="dojox.mobile.TabBarButton" data-dojo-props="iconPos1: '0,200,24,24', iconPos2: '50,200,24,24', moveTo: 'map'">Regions</li>
+			<li id="tab-settings" data-dojo-type="dojox.mobile.TabBarButton" data-dojo-props="iconPos1: '0,150,24,24', iconPos2: '50,150,24,24', moveTo: 'settings'">Settings</li>
+		</ul>
+	</body>
+</html>
+

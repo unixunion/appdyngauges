@@ -1,0 +1,13 @@
+.dojoxGaugeContent {
+    margin: 0 auto;
+    width: 200px;
+    min-height: 200px;
+}
+.gauge {
+    min-height: 200px;
+    position: relative;
+}
+.gauge .loader-icon {
+    position: absolute;
+    background-image: url(../images/ajax-loader-green.gif);
+}

@@ -1,0 +1,11 @@
+[{
+  "frequency": "ONE_MIN",
+  "metricPath": "Information Points|ssLogin|Calls per Minute",
+  "metricValues": [  {
+    "current": 315,
+    "max": 0,
+    "min": 0,
+    "startTimeInMillis": 1332168420000,
+    "value": 387
+  }]
+}]

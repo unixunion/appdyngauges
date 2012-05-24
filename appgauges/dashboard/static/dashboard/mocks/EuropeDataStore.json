@@ -1,0 +1,11 @@
+{ identifier: 'id',
+    label: 'name',
+    items: [
+        { abbr:'SWE', name:'Sweden',           capital:'Stockholm' },
+        { abbr:'NOR', name:'Egypt',             capital:'Cairo' },
+        { abbr:'EST', name:'El Salvador',       capital:'San Salvador' },
+        { abbr:'ITA', name:'Equatorial Guinea', capital:'Malabo' },
+        { abbr:'er', name:'Eritrea',           capital:'Asmara' },
+        { abbr:'ee', name:'Estonia',           capital:'Tallinn' },
+        { abbr:'et', name:'Ethiopia',          capital:'Addis Ababa' }
+]}

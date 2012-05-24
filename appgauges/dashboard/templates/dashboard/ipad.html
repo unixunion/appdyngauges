@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="apple-touch-icon" href="/static/dashboard/icon.png"/>
+		<!--<link rel="apple-touch-startup-image" sizes="1024x748" href="/static/dashboard/default.png">-->
+		<!-- iPad Portrait 768x1004 -->
+		<link rel="apple-touch-startup-image" media="(min-device-width: 768px) and (orientation: portrait)" href="/static/dashboard/images/default-portrait.png" />
+		<!-- iPad Landscape 1024x748 -->
+		<link rel="apple-touch-startup-image" media="(min-device-width: 768px) and (orientation: landscape)" href="/static/dashboard/images/default.png" />
+		<title>Platform Dashboard</title>
+		<style>
+		@import "/static/dashboard/css/base.css";
+		@import "/static/dashboard/css/ipad.css";
+		@import "/static/dashboard/css/FixedSplitter.css";
+		@import "/static/dashboard/css/gauges.css";
+		html, body{
+			height: 100%;
+			overflow: hidden;
+			position: relative;
+		}
+		.mblEdgeToEdgeList {
+			background-color: #DBDDE2;
+		}
+		</style>
+
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js" djConfig="parseOnLoad: true, mblAlwaysHideAddressBar: true"></script>
+		<script type="text/javascript" src="/static/dashboard/js/ggauge.js"></script>
+
+		<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+
+		<script language="JavaScript" type="text/javascript">
+			dojo.require("dojox.mobile");			// This is a mobile app.
+			dojo.require("dojox.mobile.parser");	// This mobile app supports running on desktop browsers
+			dojo.require("dojox.mobile.FixedSplitter");
+			dojo.require("dojox.mobile.ScrollableView");
+			dojo.require('dojox.timing');
+			dojo.require("dojox.mobile.Switch");
+			dojo.require("dojox.mobile.compat");	// This mobile app uses declarative programming with fast mobile parser
+
+			// Loading Screen
+			/*
+			dojo.addOnLoad(function() {
+				var start = new Date().getTime();
+				//dojo.parser.parse(dojo.byId('container'));
+				dojo.parser.parse(document.body);
+				(dojo.hitch(dijit.byId("initialPagePane"), paneOnLoad))();
+				setTimeout(function(){
+					var loader = dojo.byId("loader");
+					dojo.fadeOut({ node: loader, duration: 500, onEnd: function(){ loader.style.display = "none"; }}).play();
+				}, 500);
+			 });			*/
+
+
+		</script>
+		<script src="/static/dashboard/js/jquery.js"></script>
+  	   <script>
+		// Globals
+		var calculate_percentages = "off";
+
+		// global options which are clones to each google gauge
+		var options = {
+          width: 400, height: 200,
+          redFrom: 85, redTo: 100,
+          yellowFrom:75, yellowTo: 85,
+          minorTicks: 5,
+          max: 100
+        };
+
+		var change_scale = true;
+		var logins_hidden = false;
+		// attach when ready
+		dojo.ready(function(){		
+         dojo.connect(dijit.byId("swx"), "onStateChanged", function(newState){
+				calculate_percentages = newState;
+				change_scale = true;
+				console.log('calculate_percentages: ' + calculate_percentages);
+				setTimeout(function(){
+                     console.log("scale change requested, updating gauges");
+                     logins_gauge_obj.redraw();
+                     latency_gauge_obj.redraw();
+                     deposits_gauge_obj.redraw();
+				}, 1000);
+      	});
+         dojo.connect(dijit.byId("swx_logins"), "onStateChanged", function(newState){
+				// This is where I want to dynamically create / destroy gauges. Just hiding it for now.
+				if ( newState == 'on' ) { newState = false } else { newState = true }
+				logins_hidden = newState;
+				gauge = dijit.byId("obj_logins_gauge");
+				gauge.domNode.hidden = logins_hidden;
+				gauget = dojo.byId("obj_logins_title");
+				gauget.hidden = logins_hidden;
+      	});
+			var loader = dojo.byId("loader");
+         loader.style.display = "none";
+		});
+
+
+			// When the whole page has loaded, update the gauges
+			$(window).bind("load", function() {
+				console.log("window bind load complete");
+  				 // code here
+				// force_update = true;
+				logins_url = '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Information%20Points%7CcasLogin%7CCalls%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON';
+		   	logins_gauge_obj = new GGauge(logins_url, 650, 'obj_logins_gauge', 'Logins', 200);
+				latency_url = '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Overall%20Application%20Performance%7CAverage%20Response%20Time%20(ms)&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON';
+		   	latency_gauge_obj = new GGauge(latency_url, 500, 'obj_latency_gauge', 'Latency', 200);
+				deposits_url = '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Business%20Transaction%20Performance%7CBusiness%20Transactions%7Cmarcom%7C/myaccount/deposit.do%7CCalls%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON';
+		   	deposits_gauge_obj = new GGauge(deposits_url, 500, 'obj_deposits_gauge', 'Deposits', 200);
+				
+			});
+
+
+			var logins_gauge_obj
+
+
+
+			dojo.ready(function(){
+				/*logins_url = '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Information%20Points%7CcasLogin%7CCalls%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON';
+		   	logins_gauge_obj = new GGauge(logins_url, 600, 'obj_logins_gauge', 'Logins', 200);
+				latency_url = '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Overall%20Application%20Performance%7CAverage%20Response%20Time%20(ms)&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON';
+		   	latency_gauge_obj = new GGauge(latency_url, 500, 'obj_latency_gauge', 'Latency', 200);
+				deposits_url = '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Business%20Transaction%20Performance%7CBusiness%20Transactions%7Cmarcom%7C/myaccount/deposit.do%7CCalls%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON';
+		   	deposits_gauge_obj = new GGauge(deposits_url, 500, 'obj_deposits_gauge', 'Deposits', 100);*/
+			});
+
+</script>
+
+
+	</head>
+	<body class="claro">
+		<div id="loader"><img src="/static/dashboard/images/default.png" style="height: 100%; width: 100%;";></div>
+		<div dojoType="dojox.mobile.FixedSplitter" orientation="H">
+			<div dojoType="dojox.mobile.FixedSplitterPane" style="width:250px;border-right:1px solid black;">
+				<div id="settings" dojoType="dojox.mobile.ScrollableView" selected="true">
+					<h1 dojoType="dojox.mobile.Heading" fixed="top">Settings</h1>
+					<ul dojoType="dojox.mobile.EdgeToEdgeList" transition="slide" stateful="true">
+						<li dojoType="dojox.mobile.ListItem" icon="/static/dashboard/icons/standard/world.png" moveTo="overview">
+							Overview
+						</li>
+						<li dojoType="dojox.mobile.ListItem" icon="/static/dashboard/icons/standard/world.png" moveTo="gaugewall">
+							Gauge Wall
+						</li>
+						<li dojoType="dojox.mobile.ListItem" icon="/static/dashboard/icons/standard/newspaper.png" moveTo="events">
+							Events
+						</li>
+						<li class="mblEdgeToEdgeCategory">
+							Apps
+						</li>
+						<li dojoType="dojox.mobile.ListItem" icon="/static/dashboard/icons/standard/newspaper.png" moveTo="news">
+							News
+						</li>
+						<li class="mblEdgeToEdgeCategory">
+							Toggles
+						</li>
+						<li dojoType="dojox.mobile.ListItem">
+							Data Format
+							<div id="swx" class="mblItemSwitch" data-dojo-type="dojox.mobile.Switch" value="off" leftLabel="%" rightLabel="#"></div>
+						</li>
+						<li dojoType="dojox.mobile.ListItem">
+							Logins
+							<div id="swx_logins" class="mblItemSwitch" data-dojo-type="dojox.mobile.Switch" value="on"></div>
+						</li>
+						<li dojoType="dojox.mobile.ListItem">
+							Latency
+							<div id="swx_latency" class="mblItemSwitch" data-dojo-type="dojox.mobile.Switch" value="on"></div>
+						</li>
+						<li class="mblEdgeToEdgeCategory">
+                     Help
+                  </li>
+						<li dojoType="dojox.mobile.ListItem" icon="/static/dashboard/icons/standard/newspaper.png" moveTo="help">
+							General
+						</li>
+						<li dojoType="dojox.mobile.ListItem" icon="/static/dashboard/icons/standard/newspaper.png" moveTo="about">
+							About
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div dojoType="dojox.mobile.FixedSplitterPane">
+
+				<div id="help" dojoType="dojox.mobile.ScrollableView">
+					<h1 dojoType="dojox.mobile.Heading" fixed="top" next="About" moveTo="about">Help</h1>
+					<h2 dojoType="dojox.mobile.RoundRectCategory">Fullscreen</h2>
+					<div dojoType="dojox.mobile.RoundRect" shadow="true">
+					To use as a full screen app, click the export button in the safari bar and save as a desktop shortcut.
+					</div>
+					
+				</div>
+
+				<div id="about" dojoType="dojox.mobile.ScrollableView">
+					<h1 dojoType="dojox.mobile.Heading" fixed="top">About</h1>
+					<h2 dojoType="dojox.mobile.RoundRectCategory">Platform Dashboard</h2>
+					<ul dojoType="dojox.mobile.RoundRectList">
+						<li dojoType="dojox.mobile.ListItem" rightText="Kegan Holtzhausen">
+							By
+						</li>												   
+					</ul>
+				</div>
+				<div id="overview" data-dojo-type="dojox.mobile.ScrollableView" data-dojo-props="selected: true">
+	         <h1 data-dojo-type="dojox.mobile.Heading" fixed="top" data-dojo-props='label:"Platform Overview"'></h1>
+
+
+				<div class="sl-node sl-center">
+            <div class="sl-node size-3 gauge-widget">
+               <div class="item-wrapper gutter">
+                  <h2 data-dojo-type="dojox.mobile.RoundRectCategory" class="category-heading">Logins</h2>
+                  <div class="gauge" id="obj_logins_gauge"><div class="loader-icon"></div></div>
+               </div>
+            </div>
+            <div class="sl-node size-3 gauge-widget">
+               <div class="item-wrapper gutter">
+                  <h2 data-dojo-type="dojox.mobile.RoundRectCategory" class="category-heading">avgcps_gauge.label</h2>
+                  <div class="gauge" id="obj_deposits_gauge"></div>
+               </div>
+            </div>
+            <div class="sl-node size-3 gauge-widget">
+               <div class="item-wrapper gutter">
+                  <h2 data-dojo-type="dojox.mobile.RoundRectCategory" class="category-heading">Streaming AMF</h2>
+                  <div class="gauge" id="obj_deposits_gauge"></div>
+               </div>
+            </div>
+				</div>
+				</div>
+
+
+
+				<div id="gaugewall" dojoType="dojox.mobile.ScrollableView">
+					<h1 dojoType="dojox.mobile.Heading" fixed="top">Platform Overview</h1>
+					<div dojoType="dojox.mobile.RoundRect" shadow="true" style="height: 650px;">
+					</div>
+				</div>
+
+	
+
+				<div id="ggl" dojoType="dojox.mobile.ScrollableView">
+					<h1 dojoType="dojox.mobile.Heading" fixed="top">Platform Overview</h1>
+						<div dojoType="dojox.mobile.RoundRect" shadow="true" style="height: 500px;">
+							<div id="ggl_logins_gauge"></div>
+						</div>
+				</div>
+
+				<div id="newgauges" dojoType="dojox.mobile.ScrollableView">
+					<h1 dojoType="dojox.mobile.Heading" fixed="top">New Obj Gauges</h1>
+						<div dojoType="dojox.mobile.RoundRect" shadow="true" style="height: 500px;">
+						</div>
+				</div>
+	
+
+				<div id="events" dojoType="dojox.mobile.ScrollableView">
+					<h1 dojoType="dojox.mobile.Heading" fixed="top">Events</h1>
+					<h2 dojoType="dojox.mobile.RoundRectCategory">Events</h2>
+					<ul dojoType="dojox.mobile.RoundRectList">
+						<li dojoType="dojox.mobile.ListItem">
+							Some Event
+						</li>
+						<li dojoType="dojox.mobile.ListItem">
+							Some other Event
+						</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</body>
+</html>

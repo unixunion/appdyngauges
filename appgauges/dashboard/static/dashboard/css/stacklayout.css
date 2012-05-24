@@ -1,0 +1,64 @@
+/* StackLayout v2 by Campbell McGuiness * cam@workingsoftware.com.au * @camslizzle * @stacklayout * http://stacklayout.com  */
+
+.sl-node,
+.sl-fill,
+.sl-node .sl-node,
+.sl-node .sl-fill,
+.sl-fill .sl-node,
+.sl-fill .sl-fill	{
+	font-family: monospace,monospace;
+	letter-spacing: -0.65em;
+}
+
+/*	Opera Windows fix	*/
+x:-o-prefocus,
+.sl-node,
+.sl-fill,
+.sl-node .sl-fill,
+.sl-fill .sl-node,
+.sl-fill .sl-fill {
+	letter-spacing: normal;
+	word-spacing: -0.65em;
+}
+
+*+html .sl-node {
+	overflow: hidden;
+}
+
+*+html .sl-node .sl.node {
+	overflow: visible;
+}
+
+.sl-node .sl-node {
+	width: 100%;
+}
+
+.sl-node .sl-node,
+.sl-node .sl-fill {
+	display:inline-block;
+	vertical-align:top;
+	*display:inline;
+	*zoom:1;
+	*margin-right:-1px;
+	_position:relative;
+	_word-wrap:break-word;
+	_overflow-x:hidden;
+}
+
+.sl-fill:after	{
+	content:"";
+	display:table-cell;
+	width:9999em;
+}
+
+.sl-fill {
+	_overflow-x:visible;
+	*margin-right:0;
+}
+
+*,
+*:before,
+*:after {
+	letter-spacing:normal;
+	word-spacing:normal;
+}

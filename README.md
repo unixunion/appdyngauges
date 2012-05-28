@@ -1,6 +1,6 @@
 Appdynamics + Dojo Glossy Gauges Demo
 ================================
-Kegan Holtzhausen <marzubus@gmail.com>
+Kegan Holtzhausen
 
 Overview
 -------------------------
@@ -31,7 +31,7 @@ Installation
 	Customize settings.py and correct APPDYN_* variables and paths to static content if not in /opt/appgauges
 	Configure database ( sqlite is fine ) in settings.py
 	init db: python manage.py syncdb
-	import testdata: python manage.py loaddata fixtures/dashboard.json
+	import testdata: python manage.py loaddata fixtures/dashboard.json ( sed MYAPP to your app name and it might work )
 
 Running
 -------------------------

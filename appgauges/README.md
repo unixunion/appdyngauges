@@ -40,9 +40,15 @@ Running
 	Customize gauge REST URLs:
 		http://SERVERIP:8000/admin/
 	To customize the example map view:
-		By default map view only shows gauges names {{COUNTRY}}_Error, to change this,
-		adjust names of URL variables if not in the form of {{COUNTRY}}_Error in
+		By default map view only shows gauges names {{COUNTRY}}_avgStallCount, to change this,
+		adjust names of URL variables if not in the form of {{COUNTRY}}_avgStallCount in
 		dashboard/static/dashboard/js/widget-map.js
+
+	See lines like: 
+		url: settings.urls[country + '_avgStallCount'],
+
+	country is rendered as a string like 'Sweden'
+
 	Access Dashboard via:
 		http://SERVERIP:8000/
 

@@ -11,13 +11,13 @@ app.settings.default = {
       mapMarkers: '/static/dashboard/mocks/EuropeMarkers.json',
       mapData: '/static/dashboard/mocks/EuropeDataStore.json',
 		// Gauges, any gauge you create here will be referenced in views.js / widget-map.js
-		avgResponse: '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Overall%20Application%20Performance%7CAverage%20Response%20Time%20(ms)&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
-		avgCps: '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Overall%20Application%20Performance%7CCalls%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
-		avgStallCount: '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Overall%20Application%20Performance%7CStall%20Count&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
-		avgErrors: '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Overall%20Application%20Performance%7CErrors%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
-		Poland_Errors: '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Overall%20Application%20Performance%7CErrors%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
-		Sweden_Errors: '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Overall%20Application%20Performance%7CErrors%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
-		Belgium_Errors: '/appdyn/controller/rest/applications/MYAPP/metric-data?metric-path=Overall%20Application%20Performance%7CErrors%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
+		avgResponse: '/appdyn/controller/rest/applications/UNIBET/metric-data?metric-path=Overall%20Application%20Performance%7CAverage%20Response%20Time%20(ms)&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
+		avgCps: '/appdyn/controller/rest/applications/UNIBET/metric-data?metric-path=Overall%20Application%20Performance%7CCalls%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
+		avgStallCount: '/appdyn/controller/rest/applications/UNIBET/metric-data?metric-path=Overall%20Application%20Performance%7CStall%20Count&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
+		avgErrors: '/appdyn/controller/rest/applications/UNIBET/metric-data?metric-path=Overall%20Application%20Performance%7CErrors%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
+		Poland_Errors: '/appdyn/controller/rest/applications/UNIBET/metric-data?metric-path=Overall%20Application%20Performance%7CErrors%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
+		Sweden_Errors: '/appdyn/controller/rest/applications/UNIBET/metric-data?metric-path=Overall%20Application%20Performance%7CErrors%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
+		Belgium_Errors: '/appdyn/controller/rest/applications/UNIBET/metric-data?metric-path=Overall%20Application%20Performance%7CErrors%20per%20Minute&time-range-type=BEFORE_NOW&duration-in-mins=15&output=JSON',
 	}
 };
 

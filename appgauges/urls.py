@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
-from django.views.generic.simple import redirect_to
+from django.views.generic import TemplateView
 import settings
 
 from django.contrib import admin
@@ -28,8 +28,8 @@ else:
 		print("Static mode")
 		urlpatterns += patterns('',
 		url(r'^$', 'dashboard.views.indexStatic', name='index-static'),
-		url(r'^settings.js$', redirect_to, {'url': '/static/dashboard/js/settings.js'}),
-		url(r'^views.js$', redirect_to, {'url': '/static/dashboard/js/views.js'}),
+		url(r'^settings.js$', RedirectView.as_view(url='/static/dashboard/js/settings.js')),
+		url(r'^views.js$', RedirectView.as_view(url='/static/dashboard/js/views.js')),
 		url(r'^(?P<path>.*)$', 'dashboard.views.proxy_to', {'target_url': APPDYN_CONTROLLER}),
     )
 	

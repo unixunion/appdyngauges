@@ -55,6 +55,3 @@ class Gauge(models.Model):
 		print urlquote(self.rest_url)
 		print fixurl(self.rest_url)
 		return fixurl(urlquote(self.rest_url) + '&output=JSON')
-#	def save(self, *args, **kwargs):
-#		self.rest_url = urllib2.quote(self.rest_url.encode("utf8"))
-#		super(Gauge, self).save(*args, **kwargs)
